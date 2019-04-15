@@ -20,12 +20,9 @@ import java.util.Arrays;
  * finish creating tack.
  */
 
-public class GameMain extends JFrame implements Runnable {
-  
-  public static final Dimension windowSize = new Dimension(900, 800);
-  private static int updates_per_second = 60;
-  
-  private Canvas canvas;
+public class GameMain implements Runnable {
+
+  private Display display;
   private UserCar car;
   private UserCar car2;
   //private Car car;
@@ -38,26 +35,13 @@ public class GameMain extends JFrame implements Runnable {
   private BufferedImage image;
   
   public GameMain() {
-    this.setTitle("");
-    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    this.setResizable(false);
-    
-    canvas = new Canvas();
-    
-    canvas.setPreferredSize(windowSize);
-    canvas.setFocusable(false);
-    
+    display = new Display();
     // Create the background image
-    image = new BufferedImage(windowSize.width, windowSize.height, BufferedImage.TYPE_INT_RGB);
-    int[] colorData = new int[windowSize.width * windowSize.height];
+    image = new BufferedImage(Config.windowSize.width, Config.windowSize.height, BufferedImage.TYPE_INT_RGB);
+    int[] colorData = new int[Config.windowSize.width * Config.windowSize.height];
     Arrays.fill(colorData, 0xffffff);
-    image.setRGB(0, 0, windowSize.width, windowSize.height, colorData, 0, 0);
-    
-    this.add(canvas);
-    this.pack();
-    this.setLocation(50, 50); // Position on screen
-    this.setVisible(true);
-    
+    image.setRGB(0, 0, Config.windowSize.width, Config.windowSize.height, colorData, 0, 0);
+
     Setup();
     
     // Start the main thread
@@ -75,32 +59,32 @@ public class GameMain extends JFrame implements Runnable {
     Track t;
     t = TrackLoader.Load("default");
     if (t != null) {
-      track = new TrackController(windowSize.width, windowSize.height, t);
+      track = new TrackController(Config.windowSize.width, Config.windowSize.height, t);
       track.generateFull();
       isCreatingTrack = false;
     } else {
       
       // Make the track placer!
-      tp = new TrackPlacer(windowSize.width, windowSize.height);
+      tp = new TrackPlacer(Config.windowSize.width, Config.windowSize.height);
       isCreatingTrack = true;
-      this.addKeyListener(tp);
-      this.addMouseListener(tp);
-      canvas.addMouseListener(tp);
+      display.addKeyListener(tp);
+      display.addMouseListener(tp);
+      display.canvas.addMouseListener(tp);
     }
   }
   
   private UserCar createUserCar(int posx, int posy) {
-    UserCar c = new UserCar(posx, posy, updates_per_second);
-    this.addMouseListener(c);
-    this.addKeyListener(c);
+    UserCar c = new UserCar(posx, posy, Config.updates_per_second);
+    display.addMouseListener(c);
+    display.addKeyListener(c);
     return c;
   }
   
   private void getTrackFromPlacer() {
     track = tp.generateTrack();
-    this.removeMouseListener(tp);
-    this.removeKeyListener(tp);
-    canvas.removeMouseListener(tp);
+    display.removeMouseListener(tp);
+    display.removeKeyListener(tp);
+    display.canvas.removeMouseListener(tp);
     isCreatingTrack = false;
     TrackLoader.Save(track.getTrack(), "default");
   }
@@ -108,7 +92,7 @@ public class GameMain extends JFrame implements Runnable {
   public void run() {
     // Get the time since our last update
     long pastUpdateTime = System.nanoTime();
-    double delayTime = updateDelayTime(updates_per_second);
+    double delayTime = updateDelayTime(Config.updates_per_second);
     
     while (true) {
       
@@ -152,10 +136,10 @@ public class GameMain extends JFrame implements Runnable {
   }
   
   private void draw() {
-    BufferStrategy b = canvas.getBufferStrategy();
+    BufferStrategy b = display.canvas.getBufferStrategy();
     if (b == null) {
-      canvas.createBufferStrategy(2);
-      b = canvas.getBufferStrategy();
+      display.canvas.createBufferStrategy(2);
+      b = display.canvas.getBufferStrategy();
     }
     
     Graphics g = b.getDrawGraphics();
@@ -167,7 +151,7 @@ public class GameMain extends JFrame implements Runnable {
     } else {
       
       // Draw background
-      //g.drawImage(image, 0, 0, windowSize.width, windowSize.height, null);
+      //g.drawImage(image, 0, 0, Config.windowSize.width, Config.windowSize.height, null);
       
       // Draw track
       // TODO draw track

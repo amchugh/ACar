@@ -55,9 +55,9 @@ public class Loop implements Serializable {
     if (debug) {
       List<Point> p = new ArrayList<Point>();
       Line l = new Line(p1, p2);
-      for (int x = 0; x < GameMain.windowSize.getWidth(); x++) {
+      for (int x = 0; x < Config.windowSize.getWidth(); x++) {
         int y = l.getYAtX(x);
-        if (y > 0 && y < GameMain.windowSize.getHeight()) {
+        if (y > 0 && y < Config.windowSize.getHeight()) {
           p.add(new Point(x, y));
         }
       }
