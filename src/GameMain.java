@@ -41,14 +41,9 @@ public class GameMain implements Runnable {
     int[] colorData = new int[Config.windowSize.width * Config.windowSize.height];
     Arrays.fill(colorData, 0xffffff);
     image.setRGB(0, 0, Config.windowSize.width, Config.windowSize.height, colorData, 0, 0);
-
-    Setup();
-    
-    // Start the main thread
-    new Thread(this).start();
   }
   
-  private void Setup() {
+  public void setup() {
     //car = new Car();
     //car.setUpdatesPerSecond(updates_per_second);
     car = createUserCar(40, 60);
@@ -56,8 +51,7 @@ public class GameMain implements Runnable {
     //car2.makePlayerTwo();
     
     // Attempt to load the track
-    Track t;
-    t = TrackLoader.Load("default");
+    Track t = TrackLoader.Load("default");
     if (t != null) {
       track = new TrackController(Config.windowSize.width, Config.windowSize.height, t);
       track.generateFull();
@@ -102,8 +96,7 @@ public class GameMain implements Runnable {
         // Here is where all update code will be located
         //TODO
         if (isCreatingTrack) {
-          TrackPlacer.PlacingPhase p = tp.getPhase();
-          if (p == TrackPlacer.PlacingPhase.COMPLETE) {
+          if (tp.isTrackPlacementComplete()) {
             getTrackFromPlacer();
           } else {
             tp.render();
@@ -145,9 +138,7 @@ public class GameMain implements Runnable {
     Graphics g = b.getDrawGraphics();
     
     if (isCreatingTrack) {
-      
       tp.draw(g);
-      
     } else {
       
       // Draw background
