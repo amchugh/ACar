@@ -1,4 +1,3 @@
-import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
@@ -21,7 +20,7 @@ import java.util.Arrays;
  */
 
 public class GameMain implements Runnable {
-
+  
   private Display display;
   private UserCar car;
   private UserCar car2;

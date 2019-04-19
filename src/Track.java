@@ -21,6 +21,7 @@ public class Track implements java.io.Serializable {
 class TrackLoader {
   
   public static void Save(Track t, String filename) {
+    filename = addTrackType(filename);
     try {
       FileOutputStream file = new FileOutputStream(filename);
       ObjectOutputStream out = new ObjectOutputStream(file);
@@ -39,6 +40,7 @@ class TrackLoader {
   }
   
   public static Track Load(String filename) {
+    filename = addTrackType(filename);
     Track t = null;
     
     try {
@@ -60,6 +62,13 @@ class TrackLoader {
     }
     
     return t;
+  }
+  
+  private static String addTrackType(String name) {
+    if (name.matches(".+trk(?!.)")) {
+      return name;
+    }
+    return name + ".trk";
   }
   
 }

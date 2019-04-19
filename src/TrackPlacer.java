@@ -87,11 +87,11 @@ public class TrackPlacer extends KeyAdapter implements java.awt.event.MouseListe
         break;
     }
   }
-
+  
   public boolean isTrackPlacementComplete() {
     return getPhase() == TrackPlacer.PlacingPhase.COMPLETE;
   }
-
+  
   private PlacingPhase getPhase() {
     return currentPhase;
   }
