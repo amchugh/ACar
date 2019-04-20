@@ -7,6 +7,12 @@ public abstract class GameController {
   
   public GameController() {
     display = new Display();
+    display.setVisible(true);
+  }
+  
+  public GameController(boolean showDisplay) {
+    display = new Display();
+    display.setVisible(showDisplay);
   }
   
   // Define non-abstract methods.
@@ -66,6 +72,11 @@ public abstract class GameController {
   public void removeUserCarListeners(UserCar c) {
     display.removeMouseListener(c);
     display.removeKeyListener(c);
+  }
+  
+  public void setDisplayVisibility(boolean showDisplay) {
+    display.setVisible(showDisplay);
+    display.requestFocus();
   }
   
   // Getter methods

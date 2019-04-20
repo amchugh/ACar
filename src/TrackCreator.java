@@ -36,7 +36,7 @@ public class TrackCreator extends GameController implements Runnable {
   public void update() {
     if (state == TrackCreatorState.CREATING_TRACK) {
       if (tp.isTrackPlacementComplete()) {
-        System.out.print("What is the track name? ");
+        System.out.println("What is the track name? ");
         state = TrackCreatorState.WAITING_NAME;
         removeTrackPlacerListeners(tp);
       }
@@ -81,16 +81,16 @@ public class TrackCreator extends GameController implements Runnable {
         break;
       case WAITING_NAME:
         // Now we check the input to make sure it only uses valid characters.
-        if (checkTrackNameValidity(in)) {
+        if (TrackLoader.checkTrackNameValidity(in)) {
           //Name is valid. Now to save.
-          if (TrackLoader.Save(tp.generateTrack().getTrack(), in)) {
+          if (TrackLoader.save(tp.generateTrack().getTrack(), in)) {
             // Track was successfully saved.
             // Ask if the user would like to create another track
-            System.out.print("Would you like to create another track? ");
+            System.out.println("Would you like to create another track? ");
             state = TrackCreatorState.WAITING_CONTINUE;
           }
         } else {
-          System.out.println("Invalid name");
+          System.out.println("Invalid name. Please try again (regex: \"[a-zA-Z0-9_.-]\" )");
         }
         break;
       case WAITING_CONTINUE:
@@ -108,21 +108,6 @@ public class TrackCreator extends GameController implements Runnable {
     
     }
     
-  }
-  
-  
-  //private static final char[] valid_characters = new char[] {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '_', '-'};
-  
-  private static final String my_regex = "^[a-zA-Z0-9_.-]+$";
-  
-  /**
-   * Checks to ensure that the given input follows track naming guidelines
-   *
-   * @param in the input to check
-   * @return whether the input follows the guidelines
-   */
-  private boolean checkTrackNameValidity(String in) {
-    return in.matches(my_regex);
   }
   
 }

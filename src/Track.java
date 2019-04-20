@@ -22,7 +22,19 @@ public class Track implements java.io.Serializable {
 
 class TrackLoader {
   
-  public static boolean Save(Track t, String filename) {
+  private static final String my_regex = "^[a-zA-Z0-9_.-]+$";
+  
+  /**
+   * Checks to ensure that the given input follows track naming guidelines
+   *
+   * @param in the input to check
+   * @return whether the input follows the guidelines
+   */
+  public static boolean checkTrackNameValidity(String in) {
+    return in.matches(my_regex);
+  }
+  
+  public static boolean save(Track t, String filename) {
     filename = addTrackType(filename);
     try {
       FileOutputStream file = new FileOutputStream(filename);
@@ -43,7 +55,7 @@ class TrackLoader {
     }
   }
   
-  public static Track Load(String filename) {
+  public static Track load(String filename) {
     filename = addTrackType(filename);
     Track t = null;
     

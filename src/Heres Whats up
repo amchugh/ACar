@@ -4,7 +4,7 @@ Some problems:
 - Verticals lines cannot be collided with.
 
 We also want some new stuff:
-- Track Maker Mode (including naming) <-- Current Project
-- User Mode (map selection too!)
+- Track Maker Mode (including naming) -- Done.
+- User Mode (map selection too!) -- Almost Done.
 - AI Mode (map selection here too please)
     - Detach AI Mode from display too?

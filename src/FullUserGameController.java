@@ -38,7 +38,7 @@ public class FullUserGameController extends GameController implements Runnable {
     //car2.makePlayerTwo();
     
     // Attempt to load the track
-    Track t = TrackLoader.Load("default");
+    Track t = TrackLoader.load("default");
     if (t != null) {
       track = new TrackController(Config.windowSize.width, Config.windowSize.height, t);
       track.generateFull();
@@ -71,7 +71,7 @@ public class FullUserGameController extends GameController implements Runnable {
     car.getCar().setRadianRotation(sp.rotation);
     removeTrackPlacerListeners(tp);
     isCreatingTrack = false;
-    TrackLoader.Save(track.getTrack(), "default");
+    TrackLoader.save(track.getTrack(), "default");
   }
   
   @Override

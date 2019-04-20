@@ -18,7 +18,6 @@ public class Display extends JFrame {
     this.add(canvas);
     this.pack();
     this.setLocation(50, 50); // Position on screen
-    this.setVisible(true);
   }
   
 }

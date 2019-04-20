@@ -14,6 +14,13 @@ public class UserCar extends KeyAdapter implements java.awt.event.MouseListener,
   
   private Keybinds keys;
   
+  public UserCar(int _updates_per_second) {
+    this.car = new Car(0, 0);
+    setUpdatesPerSecond(_updates_per_second);
+    isMoving = new boolean[]{false, false, false, false};
+    keys = new Keybinds('w', 's', 'a', 'd');
+  }
+  
   public UserCar(int posX, int posY, int _updates_per_second) {
     this.car = new Car(posX, posY);
     setUpdatesPerSecond(_updates_per_second);
@@ -121,7 +128,7 @@ public class UserCar extends KeyAdapter implements java.awt.event.MouseListener,
   
   public void draw(Graphics g) {
     car.draw(g);
-    car.drawBoundingBox(g);
+    //car.drawBoundingBox(g);
   }
   
   public Car getCar() {

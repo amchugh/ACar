@@ -203,20 +203,23 @@ public class TrackController {
   
   // render
   private void generateImage() {
-    double max = getMaxStrength();
+//    double max = getMaxStrength();
+//    for (int i = 0; i < pixels.length; i++) {
+//      if (grid[i] == fillTile) {
+//        /*
+//        if (strength[i] > 6) {
+//          pixels[i] = 0x000000;
+//        } else {
+//          pixels[i] = 0xff00ff;
+//        }
+//        */
+//        pixels[i] = 0x010101 * (int) (strength[i] / max * 0xff);
+//      } else {
+//        pixels[i] = grid[i].color;
+//      }
+//    }
     for (int i = 0; i < pixels.length; i++) {
-      if (grid[i] == fillTile) {
-        /*
-        if (strength[i] > 6) {
-          pixels[i] = 0x000000;
-        } else {
-          pixels[i] = 0xff00ff;
-        }
-        */
-        pixels[i] = 0x010101 * (int) (strength[i] / max * 0xff);
-      } else {
-        pixels[i] = grid[i].color;
-      }
+      pixels[i] = grid[i].color;
     }
     if (showCheckpoints) {
       for (Line l : track.checkpoints) {

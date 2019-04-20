@@ -161,8 +161,10 @@ public class Car {
       int[] pos = getCenterPosition();
       g.drawImage(op.filter(getImage(), null), pos[0], pos[1], null);
       // Draw a dot in the center of the car image
+      /*
       g.setColor(Color.black);
       g.fillRect((int) xPos - 1, (int) yPos - 1, 3, 3);
+      */
     } catch (Exception e) {
     }
   }
