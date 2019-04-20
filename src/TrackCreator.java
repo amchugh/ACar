@@ -2,15 +2,18 @@ import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.util.Scanner;
 
-public class TrackCreater implements Runnable {
+public class TrackCreator implements Runnable {
   
   private Display display;
   private Scanner scanner;
   private TrackPlacer tp;
-  private boolean isCreatingTrack;
+  
+  private enum TrackCreatorState {CREATING_TRACK, WAITING_NAME, WAITING_CONTINUE}
+  
+  private TrackCreatorState state;
   
   public static void main(String[] args) {
-    TrackCreater tc = new TrackCreater();
+    TrackCreator tc = new TrackCreator();
     tc.setup();
     // Start the main thread
     new Thread(tc).start();
@@ -18,7 +21,7 @@ public class TrackCreater implements Runnable {
     tc.getInput();
   }
   
-  public TrackCreater() {
+  public TrackCreator() {
     display = new Display();
     scanner = new Scanner(System.in);
   }
@@ -43,10 +46,11 @@ public class TrackCreater implements Runnable {
     }
     */
     tp = new TrackPlacer(Config.windowSize.width, Config.windowSize.height);
-    isCreatingTrack = true;
+    state = TrackCreatorState.CREATING_TRACK;
     display.addKeyListener(tp);
     display.addMouseListener(tp);
     display.canvas.addMouseListener(tp);
+    System.out.println("Please create a track in the window.");
   }
   
   /**
@@ -68,19 +72,58 @@ public class TrackCreater implements Runnable {
    * @param in the user input
    */
   private void handleInput(String in) {
-    if (!isCreatingTrack) {
+    /*
+    if (state == TrackCreatorState.WAITING_NAME) {
       
       // Now we check the input to make sure it only uses valid characters.
       if (checkTrackNameValidity(in)) {
         //Name is valid. Now to save.
-        TrackLoader.Save(tp.generateTrack().getTrack(), in);
+        if (TrackLoader.Save(tp.generateTrack().getTrack(), in)) {
+          // Track was successfully saved.
+          // Ask if the user would like to create another track
+        }
       } else {
         System.out.println("Invalid name");
       }
       
-    } else {
+    } else if (state == TrackCreatorState.CREATING_TRACK) {
       System.out.println("The track is not finished.");
     }
+    */
+    switch (state) {
+    
+      case CREATING_TRACK:
+        System.out.println("The track is not finished.");
+        break;
+      case WAITING_NAME:
+        // Now we check the input to make sure it only uses valid characters.
+        if (checkTrackNameValidity(in)) {
+          //Name is valid. Now to save.
+          if (TrackLoader.Save(tp.generateTrack().getTrack(), in)) {
+            // Track was successfully saved.
+            // Ask if the user would like to create another track
+            System.out.print("Would you like to create another track? ");
+            state = TrackCreatorState.WAITING_CONTINUE;
+          }
+        } else {
+          System.out.println("Invalid name");
+        }
+        break;
+      case WAITING_CONTINUE:
+        // Check the input to see if the user would like to continue.
+        if (!in.isEmpty()) {
+          if (Character.toLowerCase(in.charAt(0)) == 'y') {
+            // We want to continue.
+            setup();
+            break;
+          }
+        }
+        // We don't want to continue.
+        System.exit(1);
+        break;
+    
+    }
+    
   }
   
   
@@ -106,6 +149,12 @@ public class TrackCreater implements Runnable {
     return in.matches(my_regex);
   }
   
+  private void removeTrackPlacerListeners() {
+    display.removeMouseListener(tp);
+    display.removeKeyListener(tp);
+    display.canvas.removeMouseListener(tp);
+  }
+  
   @Override
   public void run() {
     // Get the time since our last update
@@ -117,26 +166,12 @@ public class TrackCreater implements Runnable {
       // If the time since out last update is greater than the time per update, ... update
       if (System.nanoTime() - pastUpdateTime > delayTime) {
         pastUpdateTime += delayTime;
-        // Here is where all update code will be located
-        //TODO
-        /*
-        if (isCreatingTrack) {
-            TrackPlacer.PlacingPhase p = tp.getPhase();
-            if (p == TrackPlacer.PlacingPhase.COMPLETE) {
-                getTrackFromPlacer();
-            } else {
-                tp.render();
-            }
-        } else {
-            car.update();
-            //car2.update();
-            testCarCollision(car.getCar());
-        }
-        */
-        
-        if (isCreatingTrack) {
+  
+        if (state == TrackCreatorState.CREATING_TRACK) {
           if (tp.isTrackPlacementComplete()) {
-            isCreatingTrack = false;
+            System.out.print("What is the track name? ");
+            state = TrackCreatorState.WAITING_NAME;
+            removeTrackPlacerListeners();
           }
           tp.render();
         } else {
@@ -164,7 +199,7 @@ public class TrackCreater implements Runnable {
     Graphics g = b.getDrawGraphics();
     
     tp.draw(g);
-    if (!isCreatingTrack) {
+    if (state == TrackCreatorState.WAITING_NAME) {
       g.drawString("Type track name in console.", 20, 20);
     }
     

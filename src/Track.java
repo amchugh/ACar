@@ -20,7 +20,7 @@ public class Track implements java.io.Serializable {
 
 class TrackLoader {
   
-  public static void Save(Track t, String filename) {
+  public static boolean Save(Track t, String filename) {
     filename = addTrackType(filename);
     try {
       FileOutputStream file = new FileOutputStream(filename);
@@ -32,10 +32,12 @@ class TrackLoader {
       file.close();
       
       System.out.println("Saved Track to \"" + filename + "\"");
+      return true;
       
     } catch (IOException e) {
       System.out.println("Failed to save Track to \"" + filename + "\" [IOException]");
       e.printStackTrace();
+      return false;
     }
   }
   
