@@ -9,11 +9,13 @@ public class Track implements java.io.Serializable {
   public List<Line> checkpoints;
   public Loop inner;
   public Loop outer;
+  public CarSpawnPoint carSpawnPoint;
   
   public Track() {
     outer = new Loop();
     inner = new Loop();
     checkpoints = new ArrayList<>();
+    carSpawnPoint = new CarSpawnPoint();
   }
   
 }

@@ -17,7 +17,10 @@ public class TrackPlacer extends KeyAdapter implements java.awt.event.MouseListe
   private List<Line> checkpoints;
   private Point firstCheckpointPoint;
   
-  public enum PlacingPhase {INNER, OUTER, CHECKPOINT, COMPLETE}
+  private CarSpawnPoint carSpawnPoint;
+  private Point carCenter;
+  
+  public enum PlacingPhase {INNER, OUTER, CHECKPOINT, COMPLETE, CARSPAWN}
   
   private PlacingPhase currentPhase;
   
@@ -25,6 +28,7 @@ public class TrackPlacer extends KeyAdapter implements java.awt.event.MouseListe
   private int innerColor = 0xff0000;
   private int outerColor = 0x00ff00;
   private int checkpointColor = 0x0000ff;
+  private int carColor = 0xff00ff;
   
   private BufferedImage image;
   private int[] pixels;
@@ -44,6 +48,8 @@ public class TrackPlacer extends KeyAdapter implements java.awt.event.MouseListe
     pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
     checkpoints = new ArrayList<>();
     firstCheckpointPoint = null;
+    carCenter = null;
+    carSpawnPoint = null;
     innerLoop = new Loop();
     outerLoop = new Loop();
   }
@@ -68,6 +74,14 @@ public class TrackPlacer extends KeyAdapter implements java.awt.event.MouseListe
       case COMPLETE:
         System.out.println(".... shouldn't be here uh-oh");
         break;
+      case CARSPAWN:
+        if (carCenter == null) {
+          carCenter = p;
+        } else {
+          // Now we need to get the rotation between the two points.
+          carSpawnPoint = new CarSpawnPoint(carCenter, -carCenter.getRotation(p) - Math.PI / 2);
+        }
+        break;
     }
   }
   
@@ -80,11 +94,14 @@ public class TrackPlacer extends KeyAdapter implements java.awt.event.MouseListe
         currentPhase = PlacingPhase.CHECKPOINT;
         break;
       case CHECKPOINT:
-        currentPhase = PlacingPhase.COMPLETE;
+        currentPhase = PlacingPhase.CARSPAWN;
         break;
       case COMPLETE:
         System.out.println("Already done placing. Waiting on main loop. IDK how we got here.");
         break;
+  
+      case CARSPAWN:
+        currentPhase = PlacingPhase.COMPLETE;
     }
   }
   
@@ -103,12 +120,16 @@ public class TrackPlacer extends KeyAdapter implements java.awt.event.MouseListe
     t.setInnerLoop(innerLoop);
     t.setOuterLoop(outerLoop);
     t.setCheckpoints(checkpoints);
+    t.setCarSpawnPoint(carSpawnPoint);
     t.generateFull();
     return t;
   }
   
   public void draw(Graphics g) {
     g.drawImage(image, 0, 0, null);
+    if (carSpawnPoint != null) {
+      g.drawString(Double.toString(carSpawnPoint.rotation), 100, 100);
+    }
   }
   
   public void render() {
@@ -130,6 +151,8 @@ public class TrackPlacer extends KeyAdapter implements java.awt.event.MouseListe
     image = outerLoop.traceLinesOnImage(image, outerColor);
     // Checkpoint time!
     drawCheckpoints();
+    // Draw the car spawn point
+    drawCarCheckpoint();
   }
   
   private void drawCheckpoints() {
@@ -149,6 +172,44 @@ public class TrackPlacer extends KeyAdapter implements java.awt.event.MouseListe
         }
       } catch (IndexOutOfBoundsException e) {
         e.printStackTrace();
+      }
+    }
+  }
+  
+  private void drawCarCheckpoint() {
+    /*
+    // if we have a point...
+    if (carCenter != null) {
+      // And if we have a rotation...
+      if (carSpawnPoint != null) {
+        // Then we are going to draw a box pointed in the right direction.
+        // T@DO ^^
+        // But first we're going to start with the forward line
+      } else {
+        // if we don't have a rotation, we'll just draw a box.
+        
+      }
+    }
+    */
+    // Actually... let's cheat
+    if (carSpawnPoint != null) {
+      Car c = new Car(carSpawnPoint.center.getX(), carSpawnPoint.center.getY(), carSpawnPoint.rotation);
+      Line[] lines = c.getBoundingBox();
+      for (Line l : lines) {
+        pixels = l.traceBetweenPoints(pixels, image.getWidth(), carColor, fidelity);
+      }
+      Line n = new Line(carSpawnPoint.center,
+        carSpawnPoint.center.move(
+          (int) (Math.cos(carSpawnPoint.rotation) * Car.realCarSize.getWidth() / 2),
+          (int) (Math.sin(carSpawnPoint.rotation) * Car.realCarSize.getWidth() / 2)
+        )
+      );
+      pixels = n.traceBetweenPoints(pixels, image.getWidth(), carColor, fidelity);
+    } else if (carCenter != null) {
+      Car c = new Car(carCenter.getX(), carCenter.getY());
+      Line[] lines = c.getBoundingBox();
+      for (Line l : lines) {
+        pixels = l.traceBetweenPoints(pixels, image.getWidth(), carColor, fidelity);
       }
     }
   }

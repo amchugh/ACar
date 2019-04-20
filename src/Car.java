@@ -22,7 +22,7 @@ public class Car {
   
   private BufferedImage image;
   
-  private final Dimension realCarSize = new Dimension(20, 10);
+  public static final Dimension realCarSize = new Dimension(20, 10);
   private final Dimension imageCarSize = new Dimension(20, 20); // This is the size of the image for the car
   
   private String carImageName = "realcar.png";
@@ -38,6 +38,14 @@ public class Car {
   public Car(float _xPos, float _yPos) {
     xPos = _xPos;
     yPos = _yPos;
+    
+    setupImage();
+  }
+  
+  public Car(float _xPos, float _yPos, double rot) {
+    xPos = _xPos;
+    yPos = _yPos;
+    rotation = rot * 180 / Math.PI;
     
     setupImage();
   }

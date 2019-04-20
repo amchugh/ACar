@@ -25,4 +25,14 @@ public class Point implements Serializable {
     return yPos;
   }
   
+  /**
+   * Gets the rotation between two points, with the executing point as the center relative to the line formed by 'o'
+   *
+   * @param o the other point
+   * @return the rotation formed by a line connecting this to 'o'
+   */
+  public double getRotation(Point o) {
+    return Math.atan2(xPos - o.getX(), yPos - o.getY());
+  }
+  
 }

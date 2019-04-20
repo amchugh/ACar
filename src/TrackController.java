@@ -104,6 +104,10 @@ public class TrackController {
     track.inner = l;
   }
   
+  public void setCarSpawnPoint(CarSpawnPoint csp) {
+    track.carSpawnPoint = csp;
+  }
+  
   public void setCheckpoints(List<Line> p) {
     track.checkpoints = p;
     currentCheckpoint = 0;
