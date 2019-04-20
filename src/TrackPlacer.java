@@ -19,6 +19,7 @@ public class TrackPlacer extends KeyAdapter implements java.awt.event.MouseListe
   
   private CarSpawnPoint carSpawnPoint;
   private Point carCenter;
+  private Car c;
   
   public enum PlacingPhase {INNER, OUTER, CHECKPOINT, COMPLETE, CARSPAWN}
   
@@ -80,6 +81,7 @@ public class TrackPlacer extends KeyAdapter implements java.awt.event.MouseListe
         } else {
           // Now we need to get the rotation between the two points.
           carSpawnPoint = new CarSpawnPoint(carCenter, -carCenter.getRotation(p) - Math.PI / 2);
+          c = new Car(carSpawnPoint.center.getX(), carSpawnPoint.center.getY(), carSpawnPoint.rotation);
         }
         break;
     }
@@ -193,7 +195,6 @@ public class TrackPlacer extends KeyAdapter implements java.awt.event.MouseListe
     */
     // Actually... let's cheat
     if (carSpawnPoint != null) {
-      Car c = new Car(carSpawnPoint.center.getX(), carSpawnPoint.center.getY(), carSpawnPoint.rotation);
       Line[] lines = c.getBoundingBox();
       for (Line l : lines) {
         pixels = l.traceBetweenPoints(pixels, image.getWidth(), carColor, fidelity);
@@ -206,39 +207,16 @@ public class TrackPlacer extends KeyAdapter implements java.awt.event.MouseListe
       );
       pixels = n.traceBetweenPoints(pixels, image.getWidth(), carColor, fidelity);
     } else if (carCenter != null) {
+  
+    }
+    
+    /*else if (carCenter != null) {
       Car c = new Car(carCenter.getX(), carCenter.getY());
       Line[] lines = c.getBoundingBox();
       for (Line l : lines) {
         pixels = l.traceBetweenPoints(pixels, image.getWidth(), carColor, fidelity);
       }
-    }
-  }
-  
-  private void traceLines(List<Point> a, int c) {
-    if (a.size() >= 2) {
-      for (int i = 0; i < a.size() - 1; i++) { // We're using minus two because we need to do the last manually
-        Point p1 = a.get(i);
-        Point p2 = a.get(i + 1);
-        traceBetweenPoints(p1, p2, c);
-      }
-      traceBetweenPoints(a.get(a.size() - 1), a.get(0), c);
-    }
-  }
-  
-  private double getDistance(Point p1, Point p2) {
-    return Math.sqrt(Math.pow(p1.getX() - p2.getX(), 2) + Math.pow(p1.getY() - p2.getY(), 2));
-  }
-  
-  private void traceBetweenPoints(Point p1, Point p2, int c) {
-    int dx = p2.getX() - p1.getX();
-    int dy = p2.getY() - p1.getY();
-    double angle = Math.atan2(dx, dy);
-    double xChange = Math.sin(angle);
-    double yChange = Math.cos(angle);
-    for (float i = 0; i < getDistance(p1, p2); i += fidelity) {
-      pixels[((p1.getX() + (int) (xChange * i)) + (p1.getY() + (int) (yChange * i)) * width)] = c;
-    }
-    return;
+    }*/
   }
   
   public void keyPressed(KeyEvent e) {

@@ -1,7 +1,4 @@
 import java.awt.*;
-import java.awt.image.BufferStrategy;
-import java.awt.image.BufferedImage;
-import java.util.Arrays;
 
 /**
  * Contains:
@@ -19,29 +16,20 @@ import java.util.Arrays;
  * finish creating tack.
  */
 
-public class GameMain implements Runnable {
+public class FullUserGameController extends GameController implements Runnable {
   
-  private Display display;
   private UserCar car;
-  private UserCar car2;
-  //private Car car;
   
   private boolean isCreatingTrack = true;
   
   private TrackController track;
   private TrackPlacer tp;
   
-  private BufferedImage image;
-  
-  public GameMain() {
-    display = new Display();
-    // Create the background image
-    image = new BufferedImage(Config.windowSize.width, Config.windowSize.height, BufferedImage.TYPE_INT_RGB);
-    int[] colorData = new int[Config.windowSize.width * Config.windowSize.height];
-    Arrays.fill(colorData, 0xffffff);
-    image.setRGB(0, 0, Config.windowSize.width, Config.windowSize.height, colorData, 0, 0);
+  public FullUserGameController() {
+    super();
   }
   
+  @Override
   public void setup() {
     //car = new Car();
     //car.setUpdatesPerSecond(updates_per_second);
@@ -65,16 +53,13 @@ public class GameMain implements Runnable {
       // Make the track placer!
       tp = new TrackPlacer(Config.windowSize.width, Config.windowSize.height);
       isCreatingTrack = true;
-      display.addKeyListener(tp);
-      display.addMouseListener(tp);
-      display.canvas.addMouseListener(tp);
+      addTrackPlacerListeners(tp);
     }
   }
   
   private UserCar createUserCar(int posx, int posy) {
     UserCar c = new UserCar(posx, posy, Config.updates_per_second);
-    display.addMouseListener(c);
-    display.addKeyListener(c);
+    addUserCarListeners(c);
     return c;
   }
   
@@ -84,39 +69,23 @@ public class GameMain implements Runnable {
     System.out.println(sp.center.getX() + " " + sp.center.getY());
     car.getCar().setPosition(sp.center.getX(), sp.center.getY());
     car.getCar().setRadianRotation(sp.rotation);
-    display.removeMouseListener(tp);
-    display.removeKeyListener(tp);
-    display.canvas.removeMouseListener(tp);
+    removeTrackPlacerListeners(tp);
     isCreatingTrack = false;
     TrackLoader.Save(track.getTrack(), "default");
   }
   
-  public void run() {
-    // Get the time since our last update
-    long pastUpdateTime = System.nanoTime();
-    double delayTime = updateDelayTime(Config.updates_per_second);
-    
-    while (true) {
-      
-      // If the time since out last update is greater than the time per update, ... update
-      if (System.nanoTime() - pastUpdateTime > delayTime) {
-        pastUpdateTime += delayTime;
-        // Here is where all update code will be located
-        //TODO
-        if (isCreatingTrack) {
-          if (tp.isTrackPlacementComplete()) {
-            getTrackFromPlacer();
-          } else {
-            tp.render();
-          }
-        } else {
-          car.update();
-          //car2.update();
-          testCarCollision(car.getCar());
-        }
+  @Override
+  public void update() {
+    if (isCreatingTrack) {
+      if (tp.isTrackPlacementComplete()) {
+        getTrackFromPlacer();
+      } else {
+        tp.render();
       }
-      
-      draw();
+    } else {
+      car.update();
+      //car2.update();
+      testCarCollision(car.getCar());
     }
   }
   
@@ -132,37 +101,24 @@ public class GameMain implements Runnable {
     }
   }
   
-  private double updateDelayTime(int _updates_per_second) {
-    return Math.pow(10, 9) / _updates_per_second;
-  }
-  
-  private void draw() {
-    BufferStrategy b = display.canvas.getBufferStrategy();
-    if (b == null) {
-      display.canvas.createBufferStrategy(2);
-      b = display.canvas.getBufferStrategy();
-    }
-    
-    Graphics g = b.getDrawGraphics();
-    
+  @Override
+  public void draw(Graphics g) {
     if (isCreatingTrack) {
       tp.draw(g);
     } else {
-      
+  
       // Draw background
       //g.drawImage(image, 0, 0, Config.windowSize.width, Config.windowSize.height, null);
-      
+  
       // Draw track
       // TODO draw track
       track.draw(g);
-      
+  
       // Draw car
       car.draw(g);
       //car2.draw(g);
-      
+  
     }
-    g.dispose();
-    b.show();
   }
   
 }

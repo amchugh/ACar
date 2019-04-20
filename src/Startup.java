@@ -1,7 +1,7 @@
 public class Startup {
   
   public static void main(String[] args) {
-    GameMain g = new GameMain();
+    FullUserGameController g = new FullUserGameController();
     g.setup();
     g.run();
   }
