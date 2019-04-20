@@ -15,7 +15,7 @@ public class UserControlGameController extends GameController {
   
   @Override
   public void setup() {
-  
+    // First we need to get the track name.
   }
   
   @Override
