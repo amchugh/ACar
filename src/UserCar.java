@@ -21,6 +21,10 @@ public class UserCar extends KeyAdapter implements java.awt.event.MouseListener,
     keys = new Keybinds('w', 's', 'a', 'd');
   }
   
+  public void setCar(Car c) {
+    this.car = c;
+  }
+  
   public void makePlayerTwo() {
     keys = new Keybinds('i', 'k', 'j', 'l');
     car.setImage("realcartwo.png");

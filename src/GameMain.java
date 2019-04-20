@@ -55,6 +55,11 @@ public class GameMain implements Runnable {
       track = new TrackController(Config.windowSize.width, Config.windowSize.height, t);
       track.generateFull();
       isCreatingTrack = false;
+      CarSpawnPoint sp = track.getTrack().carSpawnPoint;
+      System.out.println(sp.center.getX() + " " + sp.center.getY());
+      car.getCar().setPosition(sp.center.getX(), sp.center.getY());
+      System.out.println(sp.rotation);
+      car.getCar().setRadianRotation(sp.rotation);
     } else {
       
       // Make the track placer!
@@ -75,6 +80,10 @@ public class GameMain implements Runnable {
   
   private void getTrackFromPlacer() {
     track = tp.generateTrack();
+    CarSpawnPoint sp = track.getTrack().carSpawnPoint;
+    System.out.println(sp.center.getX() + " " + sp.center.getY());
+    car.getCar().setPosition(sp.center.getX(), sp.center.getY());
+    car.getCar().setRadianRotation(sp.rotation);
     display.removeMouseListener(tp);
     display.removeKeyListener(tp);
     display.canvas.removeMouseListener(tp);

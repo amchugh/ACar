@@ -43,8 +43,8 @@ public class Car {
   }
   
   public Car(float _xPos, float _yPos, double rot) {
-    xPos = _xPos;
-    yPos = _yPos;
+    this.xPos = _xPos;
+    this.yPos = _yPos;
     rotation = rot * 180 / Math.PI;
     
     setupImage();
@@ -95,6 +95,15 @@ public class Car {
     //rotation = rotation + (r / updates_per_second * rotationSpeed * speed / maxSpeed);
   }
   
+  public void setRadianRotation(double r) {
+    rotation = r / Math.PI * 180d;
+  }
+  
+  public void setPosition(int posx, int posy) {
+    xPos = posx;
+    yPos = posy;
+  }
+  
   /**
    * Takes a number and moves it a second number's worth of value closer to zero, stopping at zero
    *
@@ -141,24 +150,21 @@ public class Car {
   }
   
   public void draw(Graphics g) {
-    
-    // The required drawing location
-    int drawLocationX = 300;
-    int drawLocationY = 300;
-    
     // Rotation information
+    try {
+      double rotationRequired = getRadianRotation();
+      double locationX = imageCarSize.width / 2;
+      double locationY = imageCarSize.height / 2;
+      AffineTransform tx = AffineTransform.getRotateInstance(rotationRequired, locationX, locationY);
+      AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
     
-    double rotationRequired = getRadianRotation();
-    double locationX = imageCarSize.width / 2;
-    double locationY = imageCarSize.height / 2;
-    AffineTransform tx = AffineTransform.getRotateInstance(rotationRequired, locationX, locationY);
-    AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
-    
-    int[] pos = getCenterPosition();
-    g.drawImage(op.filter(getImage(), null), pos[0], pos[1], null);
-    // Draw a dot in the center of the car image
-    //g.setColor(Color.black);
-    //g.fillRect((int)xPos-1, (int)yPos-1, 3,3 );
+      int[] pos = getCenterPosition();
+      g.drawImage(op.filter(getImage(), null), pos[0], pos[1], null);
+      // Draw a dot in the center of the car image
+      g.setColor(Color.black);
+      g.fillRect((int) xPos - 1, (int) yPos - 1, 3, 3);
+    } catch (Exception e) {
+    }
   }
   
   /**
