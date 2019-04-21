@@ -3,7 +3,6 @@ import java.awt.event.MouseEvent;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
-import java.util.Scanner;
 
 public class UserControlGameController extends GameController {
   
@@ -27,35 +26,15 @@ public class UserControlGameController extends GameController {
   @Override
   public void setup() {
     // First we need to get the track name.
-    Scanner sc = new Scanner(System.in);
-    boolean trackLoaded = false;
-    Track t;
-  
-    while (trackLoaded == false) {
-      System.out.println("What track would you like to play on? ");
-      String maybeName = sc.nextLine();
-      if (TrackLoader.checkTrackNameValidity(maybeName)) {
-        t = TrackLoader.load(maybeName);
-        if (t != null) {
-          // Successfully loaded the track.
-          trackLoaded = true;
-          // Create the TrackController
-          track = new TrackController(Config.windowSize.width, Config.windowSize.height, t);
-          track.generateFull();
-        }
-      } else {
-        System.out.println("Invalid name. Please try again (regex: \"[a-zA-Z0-9_.-]\" )");
-      }
-    }
-  
+    track = new TrackController(Config.windowSize.width, Config.windowSize.height, getTrackFromUserInput());
+    track.generateFull();
     // Create the Car
     car = new UserCar(Config.updates_per_second);
     // Attach listeners for Car
     addUserCarListeners(car);
     // Set the car SpawnPoint
     CarSpawnPoint sp = track.getTrack().carSpawnPoint;
-    car.getCar().setPosition(sp.center.getX(), sp.center.getY());
-    car.getCar().setRadianRotation(sp.rotation);
+    car.getCar().setSpawn(sp);
     // Set the display to visible
     setDisplayVisibility(true);
     // We need to force the user to click on the window to give

@@ -245,4 +245,9 @@ public class Car {
     return p;
   }
   
+  public void setSpawn(CarSpawnPoint sp) {
+    setPosition(sp.center.getX(), sp.center.getY());
+    setRadianRotation(sp.rotation);
+  }
+  
 }

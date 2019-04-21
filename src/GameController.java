@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.image.BufferStrategy;
+import java.util.Scanner;
 
 public abstract class GameController {
   
@@ -77,6 +78,25 @@ public abstract class GameController {
   public void setDisplayVisibility(boolean showDisplay) {
     display.setVisible(showDisplay);
     display.requestFocus();
+  }
+  
+  public Track getTrackFromUserInput() {
+    Scanner sc = new Scanner(System.in);
+    Track t;
+    
+    while (true) {
+      System.out.println("What track would you like to play on? ");
+      String maybeName = sc.nextLine();
+      if (TrackLoader.checkTrackNameValidity(maybeName)) {
+        t = TrackLoader.load(maybeName);
+        if (t != null) {
+          // Successfully loaded the track.
+          return t;
+        }
+      } else {
+        System.out.println("Invalid name. Please try again (regex: \"[a-zA-Z0-9_.-]\" )");
+      }
+    }
   }
   
   // Getter methods
