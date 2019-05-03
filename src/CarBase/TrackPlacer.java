@@ -1,3 +1,5 @@
+package CarBase;
+
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -101,7 +103,7 @@ public class TrackPlacer extends KeyAdapter implements java.awt.event.MouseListe
       case COMPLETE:
         System.out.println("Already done placing. Waiting on main loop. IDK how we got here.");
         break;
-  
+      
       case CARSPAWN:
         currentPhase = PlacingPhase.COMPLETE;
     }
@@ -207,7 +209,7 @@ public class TrackPlacer extends KeyAdapter implements java.awt.event.MouseListe
       );
       pixels = n.traceBetweenPoints(pixels, image.getWidth(), carColor, fidelity);
     } else if (carCenter != null) {
-  
+    
     }
     
     /*else if (carCenter != null) {

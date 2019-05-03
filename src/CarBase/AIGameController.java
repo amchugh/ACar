@@ -1,3 +1,5 @@
+package CarBase;
+
 import java.awt.*;
 
 public class AIGameController extends GameController {

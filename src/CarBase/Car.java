@@ -1,3 +1,5 @@
+package CarBase;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -157,7 +159,7 @@ public class Car {
       double locationY = imageCarSize.height / 2;
       AffineTransform tx = AffineTransform.getRotateInstance(rotationRequired, locationX, locationY);
       AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
-    
+      
       int[] pos = getCenterPosition();
       g.drawImage(op.filter(getImage(), null), pos[0], pos[1], null);
       // Draw a dot in the center of the car image

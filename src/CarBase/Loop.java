@@ -1,3 +1,5 @@
+package CarBase;
+
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.io.Serializable;

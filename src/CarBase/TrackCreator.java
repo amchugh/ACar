@@ -1,3 +1,5 @@
+package CarBase;
+
 import java.awt.*;
 import java.util.Scanner;
 
@@ -75,7 +77,7 @@ public class TrackCreator extends GameController implements Runnable {
    */
   private void handleInput(String in) {
     switch (state) {
-    
+      
       case CREATING_TRACK:
         System.out.println("The track is not finished.");
         break;
@@ -105,7 +107,7 @@ public class TrackCreator extends GameController implements Runnable {
         // We don't want to continue.
         System.exit(1);
         break;
-    
+      
     }
     
   }

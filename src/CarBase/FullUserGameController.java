@@ -1,3 +1,5 @@
+package CarBase;
+
 import java.awt.*;
 
 /**
@@ -106,18 +108,18 @@ public class FullUserGameController extends GameController implements Runnable {
     if (isCreatingTrack) {
       tp.draw(g);
     } else {
-  
+      
       // Draw background
       //g.drawImage(image, 0, 0, Config.windowSize.width, Config.windowSize.height, null);
-  
+      
       // Draw track
       // TODO draw track
       track.draw(g);
-  
+      
       // Draw car
       car.draw(g);
       //car2.draw(g);
-  
+      
     }
   }
   

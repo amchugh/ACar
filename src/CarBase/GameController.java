@@ -1,3 +1,5 @@
+package CarBase;
+
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.util.Scanner;
