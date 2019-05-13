@@ -113,7 +113,6 @@ public class FullUserGameController extends GameController implements Runnable {
       //g.drawImage(image, 0, 0, Config.windowSize.width, Config.windowSize.height, null);
       
       // Draw track
-      // TODO draw track
       track.draw(g);
       
       // Draw car

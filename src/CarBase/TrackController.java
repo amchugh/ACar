@@ -126,16 +126,6 @@ public class TrackController {
     return -1;
   }
   
-  // Useless.
-  // TODO remove.
-  public void hitCheckpoint(int number) {
-    if (currentCheckpoint + 1 == number) {
-      currentCheckpoint++;
-    } else {
-      System.out.println("Skipped a checkpoint.");
-    }
-  }
-  
   // render
   public void generateFull() {
     addLoopToImage(track.inner, innerEdge);
@@ -157,7 +147,6 @@ public class TrackController {
     }
     if (showDebug) {
       // DEBUG ONLY
-      // TODO REMOVE
       ps = l.getTracePoints(true);
       for (Point p : ps) {
         grid[p.getX() + p.getY() * size.width] = t;

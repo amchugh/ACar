@@ -152,9 +152,13 @@ public class Line implements Serializable {
       double angle = Math.atan2(dx, dy);
       double xChange = Math.sin(angle);
       double yChange = Math.cos(angle);
-      for (float i = 0; i < getDistance(p1, p2); i += fidelity) {
-        int index = (p1.getX() + (int) (xChange * i)) + (p1.getY() + (int) (yChange * i)) * width;
-        pixels[index] = color;
+      try {
+        for (float i = 0; i < getDistance(p1, p2); i += fidelity) {
+          int index = (p1.getX() + (int) (xChange * i)) + (p1.getY() + (int) (yChange * i)) * width;
+          pixels[index] = color;
+        }
+      } catch (ArrayIndexOutOfBoundsException e) {
+        //e.printStackTrace();
       }
       return pixels;
     }

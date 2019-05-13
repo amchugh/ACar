@@ -83,7 +83,7 @@ class TrackLoader {
   }
   
   private static String addTrackType(String name) {
-    if (name.matches(".+trk(?!.)")) {
+    if (name.matches(".+[.]trk(?!.)")) {
       return name;
     }
     return name + ".trk";
