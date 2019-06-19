@@ -40,10 +40,10 @@ public class AGenerationIOTest extends TestCase {
   }
   
   public void testSaveAndThenReload() {
-    // todo::Create a simple Generation consisting of some number of AGenomes.  Something
-    // todo::non-trivial but also not huge.  Save it.  Then call load and then compare the
-    // todo::two generation instances to make sure they are equivalent.  This will
-    // todo::require overriding the equals method.
+    // Create a simple Generation consisting of some number of AGenomes.  Something
+    // non-trivial but also not huge.  Save it.  Then call load and then compare the
+    // two generation instances to make sure they are equivalent.  This will
+    // require overriding the equals method.
     
     AMutationManager mutationManager = new AMutationManager(1, 1);
     AGeneration original = new AGeneration();

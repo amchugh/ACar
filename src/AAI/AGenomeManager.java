@@ -40,7 +40,7 @@ public class AGenomeManager {
   public void generateGenomeImages(int genNum, String path, String filetype, int seed, boolean resetSeed) {
     // Get the generation
     AGeneration g = findGenerationByNumber(genNum);
-    // Find the generation folder. If a path was not given, make it here.
+    // Find the generation folder. If a PATH was not given, make it here.
     String folder = getFolderNameAndCreateFolders(genNum, path);
     // Init the random value
     Random r = new Random(seed);
@@ -63,20 +63,21 @@ public class AGenomeManager {
     AGenerationIO.save(findGenerationByNumber(genNum), path + filename);
   }
   
-  public void loadGeneration(int genNum, String path) {
+  public boolean loadGeneration(int genNum, String path) {
     if (findGenerationByNumber(genNum) != null) {
       System.out.println("Already have a generation with that number.");
-      return;
+      return false;
     }
     String filename = "\\" + "generation_" + String.valueOf(genNum);
     if (path.equals("")) {
       filename = "generation_" + String.valueOf(genNum);
     }
     generations.add(AGenerationIO.load(path + filename));
+    return true;
   }
   
   private String getFolderNameAndCreateFolders(int genNum, String path) {
-    // Find the generation folder. If a path was not given, make it here.
+    // Find the generation folder. If a PATH was not given, make it here.
     String folder = "\\generation_" + String.valueOf(genNum);
     if (path.equals("")) {
       folder = "generation_" + String.valueOf(genNum);
@@ -155,8 +156,6 @@ public class AGenomeManager {
    */
   public AGenome breedGenomes(Random r, AGenome g1, AGenome g2) {
     // Create our new gene
-    // TODO decide if this should be changed to "addNewRandomGenome"
-    // NOTE probably not.
     AGenome n = new AGenome(network_format, current_gen);
     
     // First, get the better parent based on fitness.

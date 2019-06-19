@@ -12,6 +12,10 @@ public class AMutationManager {
   
   public ANetworkFormat networkFormat;
   
+  public AMutationManager() {
+  
+  }
+  
   public AMutationManager(int inputNum, int outputNum) {
     generatePresetInnovations(inputNum, outputNum);
   }
@@ -30,7 +34,7 @@ public class AMutationManager {
     for (int i = 0; i < outputNum; i++) {
       networkFormat.addOutputNode(getNextInnovationNumber());
     }
-    System.out.println("registered inputs and outputs");
+    //System.out.println("registered inputs and outputs");
   }
   
   /**
@@ -46,7 +50,7 @@ public class AMutationManager {
     // This is the collection of mutations. We need to make sure that the mutation that is trying
     // to be created does not already exist.
     for (AInnovation inno : innovations) {
-      if (inNodeID == inno.in_node && outNodeID == inno.out_node && isConnection == inno.is_connection) {
+      if (inNodeID == inno.in_node_innovation_number && outNodeID == inno.out_node_innovation_number && isConnection == inno.is_connection) {
         // This innovation has already been created this generation.
         if (Config.DEBUG) {
           System.out.println("Innovation of type " + (isConnection ? "connection" : "node") +
@@ -98,7 +102,7 @@ public class AMutationManager {
  * // This is the collection of mutations. We need to make sure that the mutation that is trying
  * // to be created does not already exist.
  * for (AInnovation inno : mt.connection_innovations) {
- * if (inNodeID == inno.in_node && outNodeID == inno.out_node) {
+ * if (inNodeID == inno.in_node_innovation_number && outNodeID == inno.out_node_innovation_number) {
  * // This innovation has already been created this generation.
  * if (Config.DEBUG)
  * System.out.println("*********************** " + "Innovation already exists! " + String.valueOf(inno.innovation_number));

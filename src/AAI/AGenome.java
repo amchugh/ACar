@@ -262,16 +262,16 @@ public class AGenome implements Serializable {
 
 //    // Reverse the node direction if needed
 //    boolean doReverse = false;
-//    if (in_node.node_type == ANodeGene.Type.OUTPUT) {
-//      if (out_node.node_type == ANodeGene.Type.OUTPUT) {
+//    if (in_node_innovation_number.node_type == ANodeGene.Type.OUTPUT) {
+//      if (out_node_innovation_number.node_type == ANodeGene.Type.OUTPUT) {
 //        if (Config.DEBUG)
 //          System.out.println("Failed to add connection: connection is between two output");
 //        return false;
 //      }
 //      doReverse = true;
 //    }
-//    if (out_node.node_type == ANodeGene.Type.INPUT) {
-//      if (in_node.node_type == ANodeGene.Type.INPUT) {
+//    if (out_node_innovation_number.node_type == ANodeGene.Type.INPUT) {
+//      if (in_node_innovation_number.node_type == ANodeGene.Type.INPUT) {
 //        if (Config.DEBUG)
 //          System.out.println("Failed to add connection: connection is between two input");
 //        return false;
@@ -279,9 +279,9 @@ public class AGenome implements Serializable {
 //      doReverse = true;
 //    }
 //    if (doReverse) {
-//      ANodeGene temp = out_node;
-//      out_node = in_node;
-//      in_node = temp;
+//      ANodeGene temp = out_node_innovation_number;
+//      out_node_innovation_number = in_node_innovation_number;
+//      in_node_innovation_number = temp;
 //    }
     
     boolean doReverse = false;

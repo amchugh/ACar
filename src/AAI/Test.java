@@ -60,7 +60,7 @@ public class Test {
           if (check == check2) {
         
           } else {
-            if(check.in_node == check2.out_node && check.out_node == check2.in_node) {
+            if(check.in_node_innovation_number == check2.out_node_innovation_number && check.out_node_innovation_number == check2.in_node_innovation_number) {
               System.out.println("uhoh");
             }
           }
@@ -109,7 +109,7 @@ public class Test {
         if (check == check2) {
         
         } else {
-          if(check.in_node == check2.out_node && check.out_node == check2.in_node) {
+          if(check.in_node_innovation_number == check2.out_node_innovation_number && check.out_node_innovation_number == check2.in_node_innovation_number) {
             System.out.println("uhoh");
           }
         }

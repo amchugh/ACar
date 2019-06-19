@@ -27,7 +27,7 @@ public class AGenomeTest extends TestCase {
   }
   
   public void testForceMutateConnection() {
-    // todo::Create a genome and add a connection
+    // Create a genome and add a connection
     AGenome genome = new AGenome(format, 0);
     int before = genome.getConnectionGenes().size();
     genome.forceMutateConnection(r, depthManager, mutationManager);
@@ -36,7 +36,7 @@ public class AGenomeTest extends TestCase {
   }
   
   public void testMutateNode() {
-    // todo::Create a genome, add a connection, then add a node
+    // Create a genome, add a connection, then add a node
     AGenome genome = new AGenome(format, 0);
     int before = genome.getNodeGenes().size();
     // We need a connection to make a new node.
@@ -47,7 +47,7 @@ public class AGenomeTest extends TestCase {
   }
   
   public void testFindConnectionGeneByInnovationNumber() {
-    // todo::Create a genome, add a connection, then find that connection
+    // Create a genome, add a connection, then find that connection
     AGenome genome = new AGenome(format, 0);
     // Create the connection
     genome.forceMutateConnection(r, depthManager, mutationManager);
@@ -60,7 +60,7 @@ public class AGenomeTest extends TestCase {
   }
   
   public void testFindNodeGeneByInnovationNumber() {
-    // todo::Create a genome, add a connection, add a node, then find that node
+    // Create a genome, add a connection, add a node, then find that node
     AGenome genome = new AGenome(format, 0);
     // We need a connection to make a new node.
     genome.forceMutateConnection(r, depthManager, mutationManager);
@@ -75,11 +75,11 @@ public class AGenomeTest extends TestCase {
   }
   
   public void testRelinkConnections() {
-    // todo::This one is harder.
-    // todo::We need to create a genome and have it create a connection
-    // todo::Then we need to create another genome and add that connection object
-    // todo::Finally, we need to call "relinkConnections" and make sure the
-    // todo:: the connection targets the correct nodes.
+    // This one is harder.
+    // We need to create a genome and have it create a connection
+    // Then we need to create another genome and add that connection object
+    // Finally, we need to call "relinkConnections" and make sure the
+    //  the connection targets the correct nodes.
     AGenome g1 = new AGenome(format, 0);
     AGenome g2 = new AGenome(format, 0);
     int in_node_innovation = mutationManager.networkFormat.input_innovation_numbers[0];
