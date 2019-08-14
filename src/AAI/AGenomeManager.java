@@ -97,7 +97,8 @@ public class AGenomeManager {
       setupFirstGeneration();
     } else {
       // We need to create a new population of Genomes
-      // TODO implement
+      setupNextGeneration(getCurrentGeneration());
+      // todo::Implement
     }
   }
   
@@ -115,11 +116,15 @@ public class AGenomeManager {
         genome.forceMutateConnection(r, depth_manager, mutation_manager);
       }
       // Now we have a choice. We could add random nodes and connections, but I'm not quite sure how this should work
-      // TODO figure that ^^^ out.
+      // todo::decide if we should add random nodes and connections to the initial generation
       // Now we should add the genome to the generation
       g.genomes.add(genome);
     }
     System.out.println("Created first generation");
+  }
+  
+  private void setupNextGeneration(AGeneration gen) {
+    //
   }
   
   private void createNextGeneration() {
@@ -140,7 +145,15 @@ public class AGenomeManager {
     //System.out.println("Failed to find generation");
     return null;
   }
-
+  
+  public AGeneration getCurrentGeneration() {
+    return generations.get(current_gen);
+  }
+  
+  public AMutationManager getMutationManager() {
+    return mutation_manager;
+  }
+  
 //  public AGenome addNewRandomGenome() {
 //    AGenome g = new AGenome(input_nodes, output_nodes, current_gen);
 //    generations.get(current_gen).genomes.add(g);
@@ -156,16 +169,17 @@ public class AGenomeManager {
    */
   public AGenome breedGenomes(Random r, AGenome g1, AGenome g2) {
     // Create our new gene
-    AGenome n = new AGenome(network_format, current_gen);
+    AGenome newGenome = new AGenome(network_format, current_gen);
     
     // First, get the better parent based on fitness.
-    AGenome betterG, lesserG;
+    // todo::add a chance to pick the other genome as the base
+    AGenome base, lesser;
     if (g1.fitness > g2.fitness) {
-      betterG = g1;
-      lesserG = g2;
+      base = g1;
+      lesser = g2;
     } else {
-      betterG = g2;
-      lesserG = g1;
+      base = g2;
+      lesser = g1;
     }
     
     // We need to iterate over all the genes in the better genome
@@ -173,33 +187,33 @@ public class AGenomeManager {
     // If the gene matches up, pick at random 1 gene to carry over
     
     // Start with connections
-    for (AConnectionGene g : betterG.getConnectionGenes()) {
+    for (AConnectionGene g : base.getConnectionGenes()) {
       // See if it is crossed over
-      if (lesserG.hasConnectionGene(g)) {
+      if (lesser.hasConnectionGene(g)) {
         // This gene is crossed over. Pick at random to add.
         if (r.nextFloat() < 0.5f) {
           // Take the better genome's gene
-          n.addConnectionGene(g);
+          newGenome.addConnectionGene(g);
         } else {
           // Take the lesser genome's gene
-          n.addConnectionGene(lesserG.findConnectionGeneByInnovationNumber(g.getInnovationNumber()));
+          newGenome.addConnectionGene(lesser.findConnectionGeneByInnovationNumber(g.getInnovationNumber()));
         }
       } else {
         // If this gene is not crossed over, add it
-        n.addConnectionGene(g);
+        newGenome.addConnectionGene(g);
       }
     }
     
     // Now add node genes.
     // Node genes have no specific values, so we will just copy over all of them from the better genome
-    for (ANodeGene nodeGene : betterG.getNodeGenes()) {
-      n.addNodeGene(nodeGene);
+    for (ANodeGene nodeGene : base.getNodeGenes()) {
+      newGenome.addNodeGene(nodeGene);
     }
     
     // Finally, we need to reattach connections
-    n.relinkConnections();
-    
-    return n;
+    newGenome.relinkConnections();
+  
+    return newGenome;
   }
   
 }

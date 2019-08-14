@@ -226,11 +226,69 @@ public class AGenome implements Serializable {
   }
   
   /**
+   * @return the number of legal connections that the current genome can have
+   */
+  private int getMaximumNumberOfLegalConnections() {
+    // Get the number of all the valid connection types
+    int num_input = 0;
+    int num_output = 0;
+    int num_hidden = 0;
+    for (ANodeGene n : node_genes) {
+      switch (n.node_type) {
+        case INPUT:
+          num_input++;
+          break;
+        case HIDDEN:
+          num_hidden++;
+          break;
+        case OUTPUT:
+          num_output++;
+          break;
+      }
+    }
+    return performCalculationOfNumberOfLegalConnections(num_input, num_output, num_hidden);
+  }
+  
+  /**
+   * The formula for computing number of valid connections
+   *
+   * @param in the number of input nodes
+   * @param on the number of output nodes
+   * @param hn the number of hidden nodes
+   * @return the number of possible legal connections a genome of specified structure can have
+   */
+  public static int performCalculationOfNumberOfLegalConnections(int in, int on, int hn) {
+    int total = (in * (on + hn)) + (hn * on);
+    for (int i = 2; i <= hn; i++) {
+      total += (i - 1);
+    }
+    return total;
+  }
+  
+  /**
+   * @return whether this genome is currently capable of having a new connection
+   */
+  public boolean canCreateNewConnection() {
+    return getMaximumNumberOfLegalConnections() != connection_genes.size();
+  }
+  
+  // todo::rework how random connections are chosen.
+  
+  /**
    * Adds a random Connection to the Genome. 100% success.
    *
    * @param r the random instance to use
    */
   public void forceMutateConnection(Random r, ANodeDepthManager depthManager, AMutationManager mutationManager) {
+    // Make sure that creating a new gene is possible
+    // to avoid getting stuck in a loop
+    if (!canCreateNewConnection()) {
+      if (Config.DEBUG) {
+        System.out.println("forceMutateConnection was called when no connections are possible");
+      }
+      return;
+    }
+    
     boolean s = mutateConnection(r, depthManager, mutationManager);
     while (!s) {
       s = mutateConnection(r, depthManager, mutationManager);
@@ -264,7 +322,7 @@ public class AGenome implements Serializable {
 //    boolean doReverse = false;
 //    if (in_node_innovation_number.node_type == ANodeGene.Type.OUTPUT) {
 //      if (out_node_innovation_number.node_type == ANodeGene.Type.OUTPUT) {
-//        if (Config.DEBUG)
+//        if (CarBase.Config.DEBUG)
 //          System.out.println("Failed to add connection: connection is between two output");
 //        return false;
 //      }
@@ -272,7 +330,7 @@ public class AGenome implements Serializable {
 //    }
 //    if (out_node_innovation_number.node_type == ANodeGene.Type.INPUT) {
 //      if (in_node_innovation_number.node_type == ANodeGene.Type.INPUT) {
-//        if (Config.DEBUG)
+//        if (CarBase.Config.DEBUG)
 //          System.out.println("Failed to add connection: connection is between two input");
 //        return false;
 //      }

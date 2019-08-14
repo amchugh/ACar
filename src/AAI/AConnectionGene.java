@@ -37,7 +37,7 @@ public class AConnectionGene implements Serializable {
   public void disableConnection() {
     enabled = false;
     /*
-    if (Config.DEBUG)
+    if (CarBase.Config.DEBUG)
       System.out.println("Disabled a connection");
       */
   }

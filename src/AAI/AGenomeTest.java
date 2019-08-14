@@ -125,4 +125,15 @@ public class AGenomeTest extends TestCase {
       newlyConnectedGene.in_node == correctIn ||
         newlyConnectedGene.out_node == correctOut);
   }
+  
+  public void testPerformCalculationOfNumberOfLegalConnections() {
+    assertTrue("Subtest #1 failed", AGenome.performCalculationOfNumberOfLegalConnections(1, 1, 0) == 1);
+    assertTrue("Subtest #2 failed", AGenome.performCalculationOfNumberOfLegalConnections(3, 2, 0) == 6);
+    assertTrue("Subtest #3 failed", AGenome.performCalculationOfNumberOfLegalConnections(1, 1, 2) == 6);
+//    assertTrue("Subtest #4 failed", AGenome.performCalculationOfNumberOfLegalConnections(1,1,0) == 1);
+//    assertTrue("Subtest #5 failed", AGenome.performCalculationOfNumberOfLegalConnections(1,1,0) == 1);
+//    assertTrue("Subtest #6 failed", AGenome.performCalculationOfNumberOfLegalConnections(1,1,0) == 1);
+//    assertTrue("Subtest #7 failed", AGenome.performCalculationOfNumberOfLegalConnections(1,1,0) == 1);
+  }
+  
 }

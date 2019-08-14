@@ -104,7 +104,7 @@ public class AMutationManager {
  * for (AInnovation inno : mt.connection_innovations) {
  * if (inNodeID == inno.in_node_innovation_number && outNodeID == inno.out_node_innovation_number) {
  * // This innovation has already been created this generation.
- * if (Config.DEBUG)
+ * if (CarBase.Config.DEBUG)
  * System.out.println("*********************** " + "Innovation already exists! " + String.valueOf(inno.innovation_number));
  * return inno.innovation_number;
  * }
@@ -112,7 +112,7 @@ public class AMutationManager {
  * // We've failed to find a record of this innovation. Time to add it.
  * current_innovation_number++;
  * mt.connection_innovations.add(new AInnovation(inNodeID, outNodeID, current_innovation_number));
- * if (Config.DEBUG)
+ * if (CarBase.Config.DEBUG)
  * System.out.println("*********************** " + "Regiseted new innovation");
  * return current_innovation_number;
  * }
@@ -120,12 +120,12 @@ public class AMutationManager {
  * // We've failed to find a generation tracker for this generation. Time to create one.
  * AGenerationMutationTracker mt = new AGenerationMutationTracker(genNum);
  * gen_mutations.add(mt);
- * if (Config.DEBUG)
+ * if (CarBase.Config.DEBUG)
  * System.out.println("*********************** " + "Registered new Generational tracker");
  * // Also, add our innovation
  * current_innovation_number++;
  * mt.connection_innovations.add(new AInnovation(inNodeID, outNodeID, current_innovation_number));
- * if (Config.DEBUG)
+ * if (CarBase.Config.DEBUG)
  * System.out.println("*********************** " + "Registered new innovation");
  * return current_innovation_number;
  * }
